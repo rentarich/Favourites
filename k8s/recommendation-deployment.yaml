@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommendation-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recommendation
+  template:
+    metadata:
+      labels:
+        app: recommendation
+    spec:
+      containers:
+        - image: ninavelikajne/recommendation-system
+          name: recommendation
+          env:
+            - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+              value: jdbc:postgresql://fanny.db.elephantsql.com:5432/sewztpca
+            - name: KUMULUZEE_DATASOURCES0_USERNAME
+              value: sewztpca
+            - name: KUMULUZEE_DATASOURCES0_PASSWORD
+              value: jviqrny5vLJYogFEeyBhAr7daifOAiwB
+          ports:
+            - containerPort: 4444
+              name: server
+              protocol: TCP
+         
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommendation
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 4444
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: recommendation

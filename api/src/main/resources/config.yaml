@@ -1,0 +1,27 @@
+kumuluzee:
+  name: favourites
+  version: 1.0.0
+  env:
+    name: dev
+  server:
+    http:
+      port: 4444
+  datasources:
+    - jndi-name: jdbc/ItemDS
+      connection-url: jdbc:postgresql://localhost:5432/rentarich
+      #connection-url: jdbc:postgresql://database:5432/rentarich
+      #connection-url: jdbc:postgresql://fanny.db.elephantsql.com:5432/sewztpca
+      #username: sewztpca
+      #password: jviqrny5vLJYogFEeyBhAr7daifOAiwB
+      username: postgres
+      password: postgres
+      max-pool-size: 1
+  health:
+    checks:
+      data-source-health-check:
+        type: liveness
+        jndi-name: jdbc/ItemDS
+  metrics:
+    servlet:
+      enabled: true
+      mapping: /metrics
