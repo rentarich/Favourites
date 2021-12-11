@@ -4,7 +4,11 @@ import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 
 @Entity
-@Table(name="favorites")
+@Table(name="favourites")
+@NamedQueries(value =
+        {
+            @NamedQuery(name = "Favourites.getFavouritesForPerson", query = "SELECT f FROM Favourites f WHERE f.person = :person")
+        })
 public class Favourites {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +29,7 @@ public class Favourites {
     }
 
     public Item getItem() {
-        return item;
+        return this.item;
     }
 
     public void setItem(Item item) {
@@ -36,7 +40,7 @@ public class Favourites {
         return person;
     }
 
-    public void setPerson(Person personEntity) {
-        this.person = personEntity;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

@@ -4,6 +4,9 @@
         <jta-data-source>jdbc/ItemDS</jta-data-source>
 
         <class>si.fri.rso.favourites.models.Item</class>
+        <class>si.fri.rso.favourites.models.Person</class>
+        <class>si.fri.rso.favourites.models.Favourites</class>
+        <class>si.fri.rso.favourites.models.Borrow</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

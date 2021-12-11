@@ -10,14 +10,22 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;*/
 
 
+import si.fri.rso.favourites.models.Favourites;
+import si.fri.rso.favourites.models.Item;
+import si.fri.rso.favourites.services.beans.FavouritesBean;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-        import javax.ws.rs.*;
+import javax.inject.Inject;
+import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-        import java.util.logging.Logger;
+import javax.ws.rs.core.UriInfo;
+import java.util.List;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 @Path("favourites")
@@ -27,6 +35,9 @@ public class FavouritesResource {
 
     private Client httpClient;
     private String baseUrl;
+
+    @Inject
+    private FavouritesBean favouritesBean;
 
     private Logger logger=Logger.getLogger(FavouritesResource.class.getName());
 
@@ -43,9 +54,18 @@ public class FavouritesResource {
                             array = @ArraySchema(schema = @Schema(implementation = NakupovalniSeznam.class))),
                     headers = {@Header(name = "X-Total-Count", schema = @Schema(type = "integer"))}
             )})*/
+
+    // add to fave
+
+    // remove to fave
+
+    // get all
     @GET
-    public Response.ResponseBuilder getFavourites(){
-        return Response.ok();
+    @Path("{id}")
+    public Response getFavourites(@PathParam("id") int personId){
+        List<Favourites> faveItems = favouritesBean.getFavouritesForPerson(personId);
+
+        return Response.ok(faveItems).header("X - total count", faveItems.size()).build();
     }
 
 
