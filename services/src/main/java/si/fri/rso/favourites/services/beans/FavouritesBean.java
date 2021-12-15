@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.ws.rs.core.UriInfo;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +24,9 @@ public class FavouritesBean {
 
     @Inject
     private PersonBean personBean;
+
+    @Inject
+    private ItemBean itemBean;
 
     @PostConstruct
     private void init(){
@@ -39,9 +42,7 @@ public class FavouritesBean {
     @PersistenceContext(unitName = "item-jpa")
     private EntityManager em;
 
-    public List getFavouritesForPerson(Integer personId){
-        Person person=personBean.getPerson(personId);
-
+    public List<Item> getFavouritesForPerson(Person person){
         TypedQuery<Favourites> query= em.createNamedQuery("Favourites.getFavouritesForPerson",Favourites.class);
         List<Favourites> personFave=query.setParameter("person",person).getResultList();
 
@@ -49,6 +50,47 @@ public class FavouritesBean {
         personFave.forEach(f -> items.add(f.getItem()));
 
         return items;
+    }
+
+    public Favourites getFavourite(Integer id){
+        Favourites favourite = em.find(Favourites.class, id);
+        return favourite;
+    }
+
+    public Favourites getFavourite(Integer personId,Integer itemId){
+        TypedQuery<Favourites> query= em.createNamedQuery("Favourites.getFavourite",Favourites.class);
+        Person person=personBean.getPerson(personId);
+        Item item=itemBean.getItem(itemId);
+        query.setParameter("person",person);
+        query.setParameter("item",item);
+        Favourites favourites=query.getSingleResult();
+
+        return favourites;
+    }
+
+    @Transactional
+    public Favourites addToFavourites(Integer itemId, Integer personId){
+        Person person = personBean.getPerson(personId);
+        Item item = itemBean.getItem(itemId);
+
+        Favourites favourites=new Favourites();
+        favourites.setItem(item);
+        favourites.setPerson(person);
+
+        em.persist(favourites);
+
+        return favourites;
+    }
+
+    @Transactional
+    public Favourites deleteFavourite(Integer personId,Integer itemId){
+        Favourites favourites=getFavourite(personId,itemId);
+
+        if(favourites!=null){
+            em.remove(favourites);
+        }
+
+        return favourites;
     }
 
 }

@@ -1,10 +1,13 @@
 package si.fri.rso.favourites.services.beans;
 
+import si.fri.rso.favourites.models.Item;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -32,6 +35,11 @@ public class ItemBean {
     public List getItems(){
 
         return em.createNamedQuery("Item.getAll").getResultList();
+    }
+
+    public Item getItem(Integer id){
+        Item item = em.find(Item.class, id);
+        return item;
     }
 }
 

@@ -12,7 +12,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;*/
 
 import si.fri.rso.favourites.models.Favourites;
 import si.fri.rso.favourites.models.Item;
+import si.fri.rso.favourites.models.Person;
 import si.fri.rso.favourites.services.beans.FavouritesBean;
+import si.fri.rso.favourites.services.beans.ItemBean;
+import si.fri.rso.favourites.services.beans.PersonBean;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -20,12 +23,11 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Path("favourites")
@@ -38,6 +40,12 @@ public class FavouritesResource {
 
     @Inject
     private FavouritesBean favouritesBean;
+
+    @Inject
+    private PersonBean personBean;
+
+    @Inject
+    private ItemBean itemBean;
 
     private Logger logger=Logger.getLogger(FavouritesResource.class.getName());
 
@@ -54,20 +62,54 @@ public class FavouritesResource {
                             array = @ArraySchema(schema = @Schema(implementation = NakupovalniSeznam.class))),
                     headers = {@Header(name = "X-Total-Count", schema = @Schema(type = "integer"))}
             )})*/
-
-    // add to fave
-
-    // remove to fave
-
-    // get all
     @GET
-    @Path("{id}")
-    public Response getFavourites(@PathParam("id") int personId){
-        List<Favourites> faveItems = favouritesBean.getFavouritesForPerson(personId);
+    @Path("{personId}")
+    public Response getFavourites(@PathParam("personId") int personId){
+        //Person person=favouritesBean.getFavourite(id).getPerson();
+        Person person=personBean.getPerson(personId);
+        List<Item> faveItems = favouritesBean.getFavouritesForPerson(person);
 
         return Response.ok(faveItems).header("X - total count", faveItems.size()).build();
     }
 
+    @POST
+    @Path("/{itemId}/{personId}")
+    public Response addToFavourites(@PathParam("itemId") Integer itemId, @PathParam("personId") Integer personId){
+        if ((itemId == null || personId == null)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        else {
+            Person person=personBean.getPerson(personId);
+            Item item = itemBean.getItem(itemId);
+            List<Integer> favouritesList = favouritesBean.getFavouritesForPerson(person).stream().map(i -> i.getId()).collect(Collectors.toList());
+            if(favouritesList.contains(itemId)) {
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            } else {
+                Favourites favourites = favouritesBean.addToFavourites(itemId, personId);
+                return Response.status(Response.Status.CREATED).entity(favourites).build();
+            }
+        }
+    }
+
+
+    @DELETE
+    @Path("/{itemId}/{personId}")
+    public Response removeFromFavourites(@PathParam("itemId") Integer itemId, @PathParam("personId") Integer personId){
+        if ((itemId == null || personId == null)) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        else {
+
+            try {
+                Favourites favourites=favouritesBean.deleteFavourite(personId,itemId);
+
+                return  Response.status(Response.Status.NO_CONTENT).entity(favourites).build();
+            }
+            catch (Exception e){
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+        }
+    }
 
 
 }
