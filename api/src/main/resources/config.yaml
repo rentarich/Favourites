@@ -25,3 +25,6 @@ kumuluzee:
     servlet:
       enabled: true
       mapping: /metrics
+  openapi:
+    ui:
+      enabled: true

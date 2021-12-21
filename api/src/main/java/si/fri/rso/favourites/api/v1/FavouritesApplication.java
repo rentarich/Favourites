@@ -1,18 +1,22 @@
 package si.fri.rso.favourites.api.v1;
 
-/*import com.kumuluz.ee.cors.annotations.CrossOrigin;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
-import io.swagger.v3.oas.annotations.servers.Server;*/
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.servers.Server;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-
-//@OpenAPIDefinition(info = @Info(title = "Rest API", version = "v1", contact = @Contact(), license = @License(), description = "Java API za upravljanje nakupovalnih seznamov."), servers = @Server(url ="http://localhost:4444/v1"))
+//TODO: change server url
+@SecurityScheme(name = "openid-connect", type = SecuritySchemeType.OPENIDCONNECT,
+        openIdConnectUrl = "http://auth-server-url/.well-known/openid-configuration")
 @ApplicationPath("v1")
-//@CrossOrigin(name = "my-resource")
+@OpenAPIDefinition(info = @Info(title = "CustomerApi", version = "v2.0.0", contact = @Contact(email = "rentarich@gmail.com"), license = @License(name="RentarichLicense")), servers = @Server(url = "http://localhost:4444/v1"), security
+        = @SecurityRequirement(name = "openid-connect"))
 public class FavouritesApplication extends Application {
 }

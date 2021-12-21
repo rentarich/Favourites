@@ -1,15 +1,11 @@
 package si.fri.rso.favourites.api.v1.resources;
 
-
-/*import com.kumuluz.ee.cors.annotations.CrossOrigin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;*/
-
-
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import si.fri.rso.favourites.models.Favourites;
 import si.fri.rso.favourites.models.Item;
 import si.fri.rso.favourites.models.Person;
@@ -54,15 +50,14 @@ public class FavouritesResource {
         httpClient = ClientBuilder.newClient();
     }
 
-
-    /*@Operation(description = "Vrni vse sezname", summary = "Vrni seznam vseh nakupovalnih seznamov.", tags = "seznami", responses = {
-            @ApiResponse(responseCode = "200",
-                    description = "Vrnjen seznam nakupovalnih seznamov.",
-                    content = @Content(
-                            array = @ArraySchema(schema = @Schema(implementation = NakupovalniSeznam.class))),
-                    headers = {@Header(name = "X-Total-Count", schema = @Schema(type = "integer"))}
-            )})*/
     @GET
+    @Operation(description = "Get list of all favourite items for person {personId}.", summary = "Get persons favourite items",
+            tags = "favourites",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Got all favourite items for person {personId}.", content = @Content(
+                            array = @ArraySchema(schema = @Schema(implementation = Item.class))),
+                            headers = {@Header(name = "X-Total-Count", schema = @Schema(type = "integer"))}
+                    )})
     @Path("{personId}")
     public Response getFavourites(@PathParam("personId") int personId){
         //Person person=favouritesBean.getFavourite(id).getPerson();
@@ -73,6 +68,15 @@ public class FavouritesResource {
     }
 
     @POST
+    @Operation(description = "Add item {itemId} to favourites for person {personId}.", summary = "Add to favourites", tags = "favourites", responses = {
+            @ApiResponse(responseCode = "201",
+                    description = "Added to favourites.",
+                    content = @Content(
+                            schema = @Schema(implementation = Favourites.class))
+            ),
+            @ApiResponse(responseCode = "400",
+                    description = "Bad request."
+            )})
     @Path("/{itemId}/{personId}")
     public Response addToFavourites(@PathParam("itemId") Integer itemId, @PathParam("personId") Integer personId){
         if ((itemId == null || personId == null)) {
@@ -93,6 +97,13 @@ public class FavouritesResource {
 
 
     @DELETE
+    @Operation(description = "Remove item {itemId} from favourites for person {personId}.", summary = "Remove from favourites",
+            tags = "favourites",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Removed from favourites.", content = @Content(schema = @Schema(implementation =
+                            Favourites.class))),
+                    @ApiResponse(responseCode = "400", description = "Bad request.")
+            })
     @Path("/{itemId}/{personId}")
     public Response removeFromFavourites(@PathParam("itemId") Integer itemId, @PathParam("personId") Integer personId){
         if ((itemId == null || personId == null)) {

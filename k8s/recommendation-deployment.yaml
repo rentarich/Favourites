@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: recommendation-deployment
+  name: favourites-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: recommendation
+      app: favourites
   template:
     metadata:
       labels:
-        app: recommendation
+        app: favourites
     spec:
       containers:
-        - image: ninavelikajne/recommendation-system
-          name: recommendation
+        - image: ninavelikajne/favourites:2021-12-16-02-55-06
+          name: favourites
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
               value: jdbc:postgresql://fanny.db.elephantsql.com:5432/sewztpca
@@ -33,7 +33,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: recommendation
+  name: favourites
 spec:
   type: LoadBalancer
   ports:
@@ -41,4 +41,4 @@ spec:
       protocol: TCP
       targetPort: server
   selector:
-    app: recommendation
+    app: favourites

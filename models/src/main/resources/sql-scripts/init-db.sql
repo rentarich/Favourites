@@ -9,9 +9,9 @@ INSERT INTO item (id,title, description, category) VALUES (8,'Climbing gear','Ge
 INSERT INTO item (id,title, description, category) VALUES (9,'Parachute','Perfect for sky-diving.','Sports');
 INSERT INTO item (id,title, description, category) VALUES (10,'Chess','Inside board game.','Board game');
 
-INSERT INTO person (id,username, email, role) VALUES (1,'crazyChica','crazychica@gmail.com','user');
-INSERT INTO person (id,username, email, role) VALUES (2,'crazyChichito','crazychico@gmail.com','user');
-INSERT INTO person (id,username, email, role) VALUES (3,'chessLover','chess123@gmail.com','user');
+INSERT INTO person (id,username, email, role) VALUES (1,'crazyChica','rentarich.rso@gmail.com','user');
+INSERT INTO person (id,username, email, role) VALUES (2,'crazyChichito','rentarich.rso@gmail.com','user');
+INSERT INTO person (id,username, email, role) VALUES (3,'chessLover','rentarich.rso@gmail.com','user');
 
 INSERT INTO borrow (from_date, to_date, id_person,id_item,returned,reserved) VALUES ('2021-10-29','2021-10-31',1,9, false, true);
 INSERT INTO borrow (from_date, to_date, id_person,id_item,returned,reserved) VALUES ('2021-10-29','2021-10-31',1,8, true, true);
