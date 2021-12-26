@@ -1,5 +1,6 @@
 package si.fri.rso.favourites.services.beans;
 
+import com.kumuluz.ee.logs.LogManager;
 import si.fri.rso.favourites.models.Favourites;
 import si.fri.rso.favourites.models.Item;
 import si.fri.rso.favourites.models.Person;
@@ -15,11 +16,11 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 @ApplicationScoped
 public class FavouritesBean {
-    private Logger log = Logger.getLogger(FavouritesBean.class.getName());
+    private com.kumuluz.ee.logs.Logger logger = LogManager.getLogger(PersonBean.class.getName());
+
     private String idBean;
 
     @Inject
@@ -31,12 +32,12 @@ public class FavouritesBean {
     @PostConstruct
     private void init(){
         idBean = UUID.randomUUID().toString();
-        log.info("Init bean: " + FavouritesBean.class.getSimpleName() + " idBean: " + idBean);
+        logger.info("Init bean: " + FavouritesBean.class.getSimpleName() + " idBean: " + idBean);
     }
 
     @PreDestroy
     private void destroy(){
-        log.info("Deinit bean: " + FavouritesBean.class.getSimpleName() + " idBean: " + idBean);
+        logger.info("Deinit bean: " + FavouritesBean.class.getSimpleName() + " idBean: " + idBean);
     }
 
     @PersistenceContext(unitName = "item-jpa")

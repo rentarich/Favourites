@@ -1,5 +1,6 @@
 package si.fri.rso.favourites.api.v1.resources;
 
+import com.kumuluz.ee.logs.LogManager;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -43,7 +44,8 @@ public class FavouritesResource {
     @Inject
     private ItemBean itemBean;
 
-    private Logger logger=Logger.getLogger(FavouritesResource.class.getName());
+    private com.kumuluz.ee.logs.Logger logger = LogManager.getLogger(FavouritesResource.class.getName());
+
 
     @PostConstruct
     private void init() {
@@ -63,6 +65,8 @@ public class FavouritesResource {
         //Person person=favouritesBean.getFavourite(id).getPerson();
         Person person=personBean.getPerson(personId);
         List<Item> faveItems = favouritesBean.getFavouritesForPerson(person);
+        logger.info("Got list of all favourite items for person "+personId+".");
+
 
         return Response.ok(faveItems).header("X - total count", faveItems.size()).build();
     }
@@ -80,6 +84,7 @@ public class FavouritesResource {
     @Path("/{itemId}/{personId}")
     public Response addToFavourites(@PathParam("itemId") Integer itemId, @PathParam("personId") Integer personId){
         if ((itemId == null || personId == null)) {
+            logger.info("ItemId or PersonId is null. Bad request.");
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         else {
@@ -87,9 +92,13 @@ public class FavouritesResource {
             Item item = itemBean.getItem(itemId);
             List<Integer> favouritesList = favouritesBean.getFavouritesForPerson(person).stream().map(i -> i.getId()).collect(Collectors.toList());
             if(favouritesList.contains(itemId)) {
+
+                logger.info("Item "+itemId+" for person "+personId+" is already in favourites.");
                 return Response.status(Response.Status.BAD_REQUEST).build();
             } else {
                 Favourites favourites = favouritesBean.addToFavourites(itemId, personId);
+
+                logger.info("Item "+itemId+" added to favourites for person "+personId+".");
                 return Response.status(Response.Status.CREATED).entity(favourites).build();
             }
         }
@@ -107,16 +116,21 @@ public class FavouritesResource {
     @Path("/{itemId}/{personId}")
     public Response removeFromFavourites(@PathParam("itemId") Integer itemId, @PathParam("personId") Integer personId){
         if ((itemId == null || personId == null)) {
+
+            logger.info("ItemId or PersonId is null. Bad request.");
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         else {
 
             try {
                 Favourites favourites=favouritesBean.deleteFavourite(personId,itemId);
+                logger.info("Item "+itemId+" removed from favourites for person "+personId+".");
 
                 return  Response.status(Response.Status.NO_CONTENT).entity(favourites).build();
             }
             catch (Exception e){
+
+                logger.info("Item "+itemId+" wasn't removed from favourites for person "+personId+".");
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
         }

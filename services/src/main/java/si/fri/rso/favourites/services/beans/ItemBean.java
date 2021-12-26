@@ -1,5 +1,6 @@
 package si.fri.rso.favourites.services.beans;
 
+import com.kumuluz.ee.logs.LogManager;
 import si.fri.rso.favourites.models.Item;
 
 import javax.annotation.PostConstruct;
@@ -7,26 +8,24 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 
 @ApplicationScoped
 public class ItemBean {
-    private Logger log = Logger.getLogger(ItemBean.class.getName());
+    private com.kumuluz.ee.logs.Logger logger = LogManager.getLogger(ItemBean.class.getName());
     private String idBean;
 
     @PostConstruct
     private void init(){
         idBean = UUID.randomUUID().toString();
-        log.info("Init bean: " + ItemBean.class.getSimpleName() + " idBean: " + idBean);
+        logger.info("Init bean: " + ItemBean.class.getSimpleName() + " idBean: " + idBean);
     }
 
     @PreDestroy
     private void destroy(){
-        log.info("Deinit bean: " + ItemBean.class.getSimpleName() + " idBean: " + idBean);
+        logger.info("Deinit bean: " + ItemBean.class.getSimpleName() + " idBean: " + idBean);
     }
 
     @PersistenceContext(unitName = "item-jpa")

@@ -8,23 +8,34 @@ kumuluzee:
       port: 4444
   datasources:
     - jndi-name: jdbc/ItemDS
-      connection-url: jdbc:postgresql://localhost:5432/rentarich
+      #connection-url: jdbc:postgresql://localhost:5432/rentarich
       #connection-url: jdbc:postgresql://database:5432/rentarich
-      #connection-url: jdbc:postgresql://fanny.db.elephantsql.com:5432/sewztpca
-      #username: sewztpca
-      #password: jviqrny5vLJYogFEeyBhAr7daifOAiwB
-      username: postgres
-      password: postgres
+      connection-url: jdbc:postgresql://fanny.db.elephantsql.com:5432/sewztpca
+      username: sewztpca
+      password: jviqrny5vLJYogFEeyBhAr7daifOAiwB
+      #username: postgres
+      #password: postgres
       max-pool-size: 1
-  health:
-    checks:
-      data-source-health-check:
-        type: liveness
-        jndi-name: jdbc/ItemDS
-  metrics:
-    servlet:
-      enabled: true
-      mapping: /metrics
   openapi:
     ui:
       enabled: true
+  logs:
+    config-file: '<?xml version="1.0" encoding="UTF-8"?>
+                              <Configuration name="comments">
+                                  <Appenders>
+                                      <Console name="console" target="SYSTEM_OUT">
+                                          <PatternLayout pattern="%d %p %marker %m %X %ex %n"/>
+                                      </Console>
+                                      <Socket name="logstash" host="b0d6b130-c4c9-4478-a084-7cab444f2dd8-ls.logit.io"
+                                      port="18947" protocol="udp">
+                                          <JSONLayout complete="false" compact="true" eventEol="true" charset="UTF-8" properties="true"/>
+                                      </Socket>
+                                  </Appenders>
+                                  <Loggers>
+                                      <!-- Default logger -->
+                                      <Root level="all">
+                                          <AppenderRef ref="console" level="info" />
+                                          <AppenderRef ref="logstash" level="info" />
+                                      </Root>
+                                  </Loggers>
+                              </Configuration>'
