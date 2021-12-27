@@ -17,7 +17,7 @@ import javax.ws.rs.core.Application;
 @SecurityScheme(name = "openid-connect", type = SecuritySchemeType.OPENIDCONNECT,
         openIdConnectUrl = "http://auth-server-url/.well-known/openid-configuration")
 @ApplicationPath("v1")
-@OpenAPIDefinition(info = @Info(title = "CustomerApi", version = "v2.0.0", contact = @Contact(email = "rentarich@gmail.com"), license = @License(name="RentarichLicense")), servers = @Server(url = "http://20.62.179.11/recommendation/v1"), security
+@OpenAPIDefinition(info = @Info(title = "CustomerApi", version = "v2.0.0", contact = @Contact(email = "rentarich@gmail.com"), license = @License(name="RentarichLicense")), servers = @Server(url = "http://20.62.179.11/favourites/v1"), security
         = @SecurityRequirement(name = "openid-connect"))
 @CrossOrigin
 public class FavouritesApplication extends Application {
