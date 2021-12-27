@@ -39,3 +39,7 @@ kumuluzee:
                                       </Root>
                                   </Loggers>
                               </Configuration>'
+  cors-filter:
+    servlet:
+      allow-generic-http-requests: true
+      allow-origin: "*"

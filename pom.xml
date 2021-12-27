@@ -29,6 +29,7 @@
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <kumuluzee-openapi.version>1.0.1</kumuluzee-openapi.version>
         <postgresql.version>42.3.0</postgresql.version>
+        <kumuluzee-cors.version>1.0.5</kumuluzee-cors.version>
         <kumuluzee-logs.version>1.4.2</kumuluzee-logs.version>
     </properties>
 
@@ -72,6 +73,7 @@
                 <artifactId>kumuluzee-health</artifactId>
                 <version>${kumuluz-health.version}</version>
             </dependency>
+
             <dependency>
                 <artifactId>kumuluzee-logs-log4j2</artifactId>
                 <groupId>com.kumuluz.ee.logs</groupId>
