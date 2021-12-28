@@ -7,8 +7,9 @@ import javax.persistence.*;
 @Table(name="favourites")
 @NamedQueries(value =
         {
-            @NamedQuery(name = "Favourites.getFavouritesForPerson", query = "SELECT f FROM Favourites f WHERE f.person = :person"),
-            @NamedQuery(name = "Favourites.getFavourite", query = "SELECT f FROM Favourites f WHERE f.person = :person AND f.item= :item")
+                @NamedQuery(name = "Favourites.getFavouritesForPerson", query = "SELECT f FROM Favourites f WHERE f.person = :person"),
+                @NamedQuery(name = "Favourites.getFavourite", query = "SELECT f FROM Favourites f WHERE f.person = :person AND f.item= :item"),
+                @NamedQuery(name = "Favourites.getAll", query = "SELECT f FROM Favourites f")
         })
 public class Favourites {
     @Id

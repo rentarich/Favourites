@@ -69,6 +69,11 @@ public class FavouritesBean {
         return favourites;
     }
 
+    public List getFavourites(){
+
+        return em.createNamedQuery("Favourites.getAll").getResultList();
+    }
+
     @Transactional
     public Favourites addToFavourites(Integer itemId, Integer personId){
         Person person = personBean.getPerson(personId);
@@ -86,6 +91,17 @@ public class FavouritesBean {
     @Transactional
     public Favourites deleteFavourite(Integer personId,Integer itemId){
         Favourites favourites=getFavourite(personId,itemId);
+
+        if(favourites!=null){
+            em.remove(favourites);
+        }
+
+        return favourites;
+    }
+
+    @Transactional
+    public Favourites deleteOneFavourite(Integer favouritesId){
+        Favourites favourites=em.find(Favourites.class,favouritesId);
 
         if(favourites!=null){
             em.remove(favourites);

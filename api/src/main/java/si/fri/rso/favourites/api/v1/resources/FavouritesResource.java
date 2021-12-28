@@ -53,22 +53,53 @@ public class FavouritesResource {
     }
 
     @GET
+    @Operation(description = "Get list of all favourites.", summary = "Get all favourites.",
+            tags = "favourites",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Got all favourites.", content = @Content(
+                            array = @ArraySchema(schema = @Schema(implementation = Favourites.class))),
+                            headers = {@Header(name = "X-Total-Count", schema = @Schema(type = "integer"))}
+                    ),
+                    @ApiResponse(responseCode = "500", description = "Bad request.")
+            })
+    public Response getAllFavourites(){
+
+        try {
+            List<Favourites> faveItems = favouritesBean.getFavourites();
+            logger.info("Got list of all favourites.");
+            return Response.ok(faveItems).header("X - total count", faveItems.size()).build();
+        }
+        catch (Exception e){
+            logger.error("Couldn't get list of all favourites.");
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+
+    @GET
     @Operation(description = "Get list of all favourite items for person {personId}.", summary = "Get persons favourite items",
             tags = "favourites",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Got all favourite items for person {personId}.", content = @Content(
                             array = @ArraySchema(schema = @Schema(implementation = Item.class))),
                             headers = {@Header(name = "X-Total-Count", schema = @Schema(type = "integer"))}
-                    )})
+                    ),
+                    @ApiResponse(responseCode = "400", description = "Bad request.")
+            })
     @Path("{personId}")
     public Response getFavourites(@PathParam("personId") int personId){
-        //Person person=favouritesBean.getFavourite(id).getPerson();
-        Person person=personBean.getPerson(personId);
-        List<Item> faveItems = favouritesBean.getFavouritesForPerson(person);
-        logger.info("Got list of all favourite items for person "+personId+".");
+        try {
 
+            Person person = personBean.getPerson(personId);
+            List<Item> faveItems = favouritesBean.getFavouritesForPerson(person);
+            logger.info("Got list of all favourite items for person " + personId + ".");
 
-        return Response.ok(faveItems).header("X - total count", faveItems.size()).build();
+            return Response.ok(faveItems).header("X - total count", faveItems.size()).build();
+        }
+        catch (Exception e){
+            logger.info("Couldn't get list of all favourite items for person " + personId + ".");
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @POST
@@ -133,6 +164,29 @@ public class FavouritesResource {
                 logger.info("Item "+itemId+" wasn't removed from favourites for person "+personId+".");
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
+        }
+    }
+
+    @DELETE
+    @Operation(description = "Remove favourites {favouritesId}.", summary = "Remove from favourites",
+            tags = "favourites",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Removed from favourites.", content = @Content(schema = @Schema(implementation =
+                            Favourites.class))),
+                    @ApiResponse(responseCode = "400", description = "Bad request.")
+            })
+    @Path("/{favouritesId}")
+    public Response removeOneFavourites(@PathParam("favouritesId") Integer favouritesId){
+        try {
+            Favourites favourites=favouritesBean.deleteOneFavourite(favouritesId);
+            logger.info("Favourites "+favouritesId+" removed from favourites.");
+
+            return  Response.status(Response.Status.NO_CONTENT).entity(favourites).build();
+        }
+        catch (Exception e){
+
+            logger.info("Favourites "+favouritesId+" couldn't be removed from favourites.");
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 
