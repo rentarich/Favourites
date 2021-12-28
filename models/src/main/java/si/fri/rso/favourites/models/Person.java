@@ -12,6 +12,9 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Borrow> borrows;
+
     @Column(name = "username")
     private String username;
 

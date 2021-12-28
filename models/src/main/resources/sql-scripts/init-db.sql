@@ -13,11 +13,11 @@ INSERT INTO person (id,username, email, role) VALUES (1,'crazyChica','rentarich.
 INSERT INTO person (id,username, email, role) VALUES (2,'crazyChichito','rentarich.rso@gmail.com','user');
 INSERT INTO person (id,username, email, role) VALUES (3,'chessLover','rentarich.rso@gmail.com','user');
 
-INSERT INTO borrow (from_date, to_date, id_person,id_item,returned,reserved) VALUES ('2021-10-29','2021-10-31',1,9, false, true);
-INSERT INTO borrow (from_date, to_date, id_person,id_item,returned,reserved) VALUES ('2021-10-29','2021-10-31',1,8, true, true);
-INSERT INTO borrow (from_date, to_date, id_person,id_item,returned,reserved) VALUES ('2021-10-29','2021-10-31',2,6, false, false);
-INSERT INTO borrow (from_date, to_date, id_person,id_item,returned,reserved) VALUES ('2021-10-29','2021-10-31',3,10, false, false);
+INSERT INTO borrow (id,from_date, to_date, id_person,id_item,returned,reserved) VALUES (1,'2021-10-29','2021-10-31',1,9, false, true);
+INSERT INTO borrow (id,from_date, to_date, id_person,id_item,returned,reserved) VALUES (2,'2021-10-29','2021-10-31',1,8, true, true);
+INSERT INTO borrow (id,from_date, to_date, id_person,id_item,returned,reserved) VALUES (3,'2021-10-29','2021-10-31',2,6, false, false);
+INSERT INTO borrow (id,from_date, to_date, id_person,id_item,returned,reserved) VALUES (4,'2021-10-29','2021-10-31',3,10, false, false);
 
-INSERT INTO favourites (id_person,id_item) VALUES (1,4);
-INSERT INTO favourites (id_person,id_item) VALUES (1,8);
-INSERT INTO favourites (id_person,id_item) VALUES (1,3);
+INSERT INTO favourites (id,id_person,id_item) VALUES (1,1,4);
+INSERT INTO favourites (id,id_person,id_item) VALUES (2,1,8);
+INSERT INTO favourites (id,id_person,id_item) VALUES (3,1,3);

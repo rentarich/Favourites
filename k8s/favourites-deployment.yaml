@@ -13,7 +13,7 @@ spec:
         app: favourites
     spec:
       containers:
-        - image: ninavelikajne/favourites:2021-12-16-02-55-06
+        - image: ninavelikajne/favourites:2021-12-27-15-35-55
           name: favourites
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL

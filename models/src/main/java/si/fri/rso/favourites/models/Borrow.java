@@ -5,7 +5,14 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="borrow")
+@NamedQueries(value =
+        {
+                @NamedQuery(name = "Borrow.getAll", query = "SELECT b FROM Borrow b"),
+                @NamedQuery(name = "Borrow.getBorrowForPerson", query = "SELECT b FROM Borrow b WHERE b.person = :person"),
+                @NamedQuery(name = "Borrow.getReservedOrBorrowedItems", query = "SELECT b FROM Borrow b WHERE b.reserved = true OR b.returned=false")
+        })
 public class Borrow {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

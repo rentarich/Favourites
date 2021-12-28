@@ -43,3 +43,8 @@ kumuluzee:
     servlet:
       allow-generic-http-requests: true
       allow-origin: "*"
+    annotations:
+      my-resource:
+        allow-origin: "http://localhost:4200"
+        allow-subdomains: true
+        supported-methods: "GET, POST, DELETE, HEAD, OPTIONS, PUT"

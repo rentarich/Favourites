@@ -2,6 +2,7 @@ package si.fri.rso.favourites.models;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "item")
@@ -24,6 +25,9 @@ public class Item {
 
     @Column(name = "category")
     private String category;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Borrow> borrows;
 
 
     public String getTitle() {
